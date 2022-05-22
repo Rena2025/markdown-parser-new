@@ -13,37 +13,52 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             int openBracket = markdown.indexOf("[", currentIndex);
+            int tempOpenBracket = openBracket;
+            // fix1
             int backTick = markdown.indexOf("`", currentIndex);
 		    if (openBracket == -1) {
                 break;
+            }
+            
+            if (openBracket - backTick == 1) {
+                openBracket = markdown.indexOf("[", tempOpenBracket);
             }
             
             int closeBracket = markdown.indexOf("]", openBracket);
             if (closeBracket == -1) {
                 break;
             }
+            
             int openParen = markdown.indexOf("(", closeBracket);
 		    if(openParen == -1){
 			    break;
 		    }
-          
-            
+
             int closeParen = markdown.indexOf(")", openParen);
-            if (markdown.substring(openParen, closeParen).contains("\n")) {
-                closeParen = closeParen+1;
-            }
+            
+            // fix2
             if (closeParen < markdown.length() -1) {
                 while (markdown.charAt(closeParen+1) == ')') {
                     closeParen++;
                 }
             }
+            
+            
 	        if(closeParen == -1){
 		        break;
             }
-            
-            if (!(openBracket - backTick == 1)) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            /*
+            if (markdown.substring(openParen+1, closeParen).contains("\n")) {
+                closeParen = closeParen+1;
             }
+            */
+            
+            
+            
+            // fix 1
+            //if ((openBracket - backTick != 1)) {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            //}
             currentIndex = closeParen + 1;
             
         }
