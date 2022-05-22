@@ -37,7 +37,7 @@ public class MarkdownParse {
             if (markdown.substring(openBracket, closeBracket).contains("\n")) {
                 openBracket = markdown.indexOf("[", openBracket + 1);
                 closeBracket = markdown.indexOf("]", openBracket+1);
-                openParen = markdown.indexOf("\n", openParen);
+                // openParen = markdown.indexOf("\n", openParen);
             }
             
 
@@ -56,7 +56,10 @@ public class MarkdownParse {
             }
             
             // fix 3
-            if (markdown.charAt(closeParen-3) == '\n') {
+            // openParen = markdown.indexOf("\n", openParen);
+            // markdown.charAt(closeParen-3) == '\n'
+            // if (markdown.substring("\n\n", openParen, closeParen))
+            if (markdown.substring(openParen, closeParen).contains("\n\n")) {
                 openParen = markdown.indexOf("(", openParen + 1);
                 closeParen = markdown.indexOf(")", closeParen+1);
                 if(closeParen == -1 || openParen == -1) {
@@ -66,7 +69,6 @@ public class MarkdownParse {
             
             
             toReturn.add(markdown.substring(openParen + 1, closeParen));
-            
             currentIndex = closeParen + 1;
             
         }
