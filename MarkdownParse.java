@@ -13,15 +13,14 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             int openBracket = markdown.indexOf("[", currentIndex);
-            int tempOpenBracket = openBracket;
-            // fix1
+            // fix 1
             int backTick = markdown.indexOf("`", currentIndex);
 		    if (openBracket == -1) {
                 break;
             }
-            
+            // fix 1
             if (openBracket - backTick == 1) {
-                openBracket = markdown.indexOf("[", tempOpenBracket);
+                openBracket = markdown.indexOf("[", openBracket + 1);
             }
             
             int closeBracket = markdown.indexOf("]", openBracket);
@@ -34,9 +33,17 @@ public class MarkdownParse {
 			    break;
 		    }
 
+            // fix 3
+            if (markdown.substring(openBracket, closeBracket).contains("\n")) {
+                openBracket = markdown.indexOf("[", openBracket + 1);
+                closeBracket = markdown.indexOf("]", openBracket+1);
+                openParen = markdown.indexOf("\n", openParen);
+            }
+            
+
             int closeParen = markdown.indexOf(")", openParen);
             
-            // fix2
+            // fix 2
             if (closeParen < markdown.length() -1) {
                 while (markdown.charAt(closeParen+1) == ')') {
                     closeParen++;
@@ -47,18 +54,19 @@ public class MarkdownParse {
 	        if(closeParen == -1){
 		        break;
             }
-            /*
-            if (markdown.substring(openParen+1, closeParen).contains("\n")) {
-                closeParen = closeParen+1;
+            
+            // fix 3
+            if (markdown.charAt(closeParen-3) == '\n') {
+                openParen = markdown.indexOf("(", openParen + 1);
+                closeParen = markdown.indexOf(")", closeParen+1);
+                if(closeParen == -1 || openParen == -1) {
+                    break;
+                }
             }
-            */
             
             
+            toReturn.add(markdown.substring(openParen + 1, closeParen));
             
-            // fix 1
-            //if ((openBracket - backTick != 1)) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
-            //}
             currentIndex = closeParen + 1;
             
         }
