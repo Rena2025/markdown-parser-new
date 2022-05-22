@@ -27,15 +27,18 @@ public class MarkdownParse {
 			    break;
 		    }
           
-            int closeParen = markdown.indexOf(")", openParen);
             
-	        if(closeParen == -1){
-		        break;
+            int closeParen = markdown.indexOf(")", openParen);
+            if (markdown.substring(openParen, closeParen).contains("\n")) {
+                closeParen = closeParen+1;
             }
-            if (closeParen < markdown.length() -2) {
-                while (markdown.charAt(closeParen+1) != ')') {
+            if (closeParen < markdown.length() -1) {
+                while (markdown.charAt(closeParen+1) == ')') {
                     closeParen++;
                 }
+            }
+	        if(closeParen == -1){
+		        break;
             }
             
             if (!(openBracket - backTick == 1)) {
