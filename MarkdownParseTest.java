@@ -90,8 +90,30 @@ public class MarkdownParseTest {
     public void testSnippet1() throws IOException {
         ArrayList<String> arr = new ArrayList<>();
         arr = MarkdownParse
-                .getLinks(Files.readString(Path.of("Snippet1.md")));
+                .getLinks(Files.readString(Path.of(
+                    "C:/Users/Owner/OneDrive/Documents/GitHub/markdown-parser-new/Snippet1.md")));
 
-        assertEquals(List.of("google.com", "ucsd.edu"), arr);
+        assertEquals(List.of("`google.com", "google.com", "ucsd.edu"), arr);
     }
+
+    @Test
+    public void testSnippet2() throws IOException {
+        ArrayList<String> arr = new ArrayList<>();
+        arr = MarkdownParse
+                .getLinks(Files.readString(Path.of(
+                    "C:/Users/Owner/OneDrive/Documents/GitHub/markdown-parser-new/Snippet2.md")));
+
+        assertEquals(List.of("a.com", "a.com(())", "example.com"), arr);
+    }
+
+    @Test
+    public void testSnippet3() throws IOException {
+        ArrayList<String> arr = new ArrayList<>();
+        arr = MarkdownParse
+                .getLinks(Files.readString(Path.of(
+                    "C:/Users/Owner/OneDrive/Documents/GitHub/markdown-parser-new/Snippet3.md")));
+
+        assertEquals(List.of( "https://sites.google.com/eng.ucsd.edu/cse-15l-spring-2022/schedule"), arr);
+    }
+    
 }
